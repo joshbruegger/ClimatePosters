@@ -143,7 +143,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			height,
 			file_size: file.size,
 			download_count: 0,
-			status: 'pending'
+			status: 'approved'
 		};
 		if (thumbBlob?.url) payload.thumbnail_url = thumbBlob.url;
 

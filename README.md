@@ -1,6 +1,6 @@
 # ClimatePosters
 
-SvelteKit gallery for climate awareness posters: public uploads (pending review), Vercel Blob storage, PocketBase (SQLite) records, and admin moderation.
+SvelteKit gallery for climate awareness posters: public uploads go live immediately, Vercel Blob storage, PocketBase (SQLite) records, and moderators can delete posters when needed.
 
 ## Setup
 
@@ -23,4 +23,4 @@ bun run dev
 
 ## Admin
 
-Open `/admin/moderation`, sign in with `ADMIN_MODERATION_PASSWORD`, then approve pending posters or remove approved ones. Optional `ADMIN_API_BEARER_TOKEN` enables `Authorization: Bearer` for the same admin APIs.
+Open `/admin/moderation`, sign in with `ADMIN_MODERATION_PASSWORD`, then delete posters that should not stay in the gallery. Optional `ADMIN_API_BEARER_TOKEN` enables `Authorization: Bearer` for admin APIs (`GET` / `DELETE` `/api/admin/posters`).

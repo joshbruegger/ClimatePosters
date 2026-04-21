@@ -1,29 +1,16 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getAdminApiBearerToken } from '$lib/server/env.js';
+import { isAdminAuthorized } from '$lib/server/admin-auth.js';
 import { ensureAdminAuth } from '$lib/server/pocketbase.js';
-import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionCookieValue } from '$lib/server/admin-session.js';
-
-function isAuthorized(request: Request): boolean {
-	const bearer = getAdminApiBearerToken();
-	const auth = request.headers.get('authorization');
-	if (bearer && auth === `Bearer ${bearer}`) return true;
-
-	const cookie = request.headers.get('cookie');
-	if (!cookie) return false;
-	const m = cookie.match(new RegExp(`(?:^|;\\s*)${ADMIN_SESSION_COOKIE_NAME}=([^;]+)`));
-	const raw = m?.[1] ? decodeURIComponent(m[1]) : undefined;
-	return verifyAdminSessionCookieValue(raw);
-}
 
 const DEFAULT_LIMIT = 20;
 
 export const GET: RequestHandler = async ({ request, url }) => {
-	if (!isAuthorized(request)) {
+	if (!isAdminAuthorized(request)) {
 		error(401, 'Unauthorized.');
 	}
 
-	const status = url.searchParams.get('status') ?? 'pending';
+	const status = url.searchParams.get('status') ?? 'approved';
 	const page = Math.max(1, Number(url.searchParams.get('page') ?? '1') || 1);
 	const limit = Math.min(Math.max(1, Number(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)) || DEFAULT_LIMIT), 50);
 
@@ -53,4 +40,27 @@ export const GET: RequestHandler = async ({ request, url }) => {
 		console.error(e);
 		error(500, 'Failed to load posters.');
 	}
+};
+
+export const DELETE: RequestHandler = async ({ request, url }) => {
+	if (!isAdminAuthorized(request)) {
+		error(401, 'Unauthorized.');
+	}
+
+	const id = url.searchParams.get('id');
+	if (!id?.trim()) {
+		error(400, 'Query parameter id is required.');
+	}
+
+	const pb = await ensureAdminAuth();
+	const adminEmail = pb.authStore.record?.email ?? 'admin';
+
+	try {
+		await pb.collection('posters').delete(id);
+	} catch (e) {
+		console.error(e);
+		error(500, 'Failed to delete poster.');
+	}
+
+	return json({ ok: true, deleted: id, deleted_by: String(adminEmail) });
 };

@@ -80,7 +80,7 @@
 				setAnnounce(msg);
 				return;
 			}
-			successMsg = 'Thanks! Your poster was submitted and is pending review.';
+			successMsg = 'Thanks! Your poster is now in the gallery.';
 			setAnnounce(successMsg);
 			title = '';
 			description = '';
@@ -114,7 +114,7 @@
 		<Collapsible.Content class="overflow-hidden border-t border-emerald-900/10 dark:border-emerald-100/10">
 			<form class="space-y-4 px-4 py-4 sm:px-5" onsubmit={submit}>
 				<p class="text-sm text-emerald-900/80 dark:text-emerald-100/80">
-					PNG, JPG, JPEG, or WebP up to 20MB. Submissions are reviewed before they appear in the gallery.
+					PNG, JPG, JPEG, or WebP up to 20MB. Posters go live in the gallery right away; moderators may remove content that violates guidelines.
 				</p>
 
 				<div

@@ -9,13 +9,12 @@
 	let password = $state('');
 	let loggedIn = $state(false);
 	let checking = $state(false);
-	let statusFilter = $state<'pending' | 'approved' | 'removed' | 'all'>('pending');
+	let statusFilter = $state<'approved' | 'removed' | 'all'>('approved');
 	let posters = $state<PosterRow[]>([]);
 	let pageNum = $state(1);
 	let hasMore = $state(true);
 	let loading = $state(false);
 	let err = $state<string | null>(null);
-	let reason = $state('');
 
 	async function login(e: Event) {
 		e.preventDefault();
@@ -73,24 +72,23 @@
 		}
 	}
 
-	async function moderate(id: string, action: 'approve' | 'remove') {
+	async function deletePoster(id: string, title: string) {
+		if (!confirm(`Delete “${title}” from the gallery? This cannot be undone.`)) return;
 		err = null;
 		try {
-			const res = await fetch(`/api/posters/${id}/moderate`, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				credentials: 'include',
-				body: JSON.stringify({ action, reason: reason.trim() || undefined })
+			const u = new URLSearchParams();
+			u.set('id', id);
+			const res = await fetch(`/api/admin/posters?${u}`, {
+				method: 'DELETE',
+				credentials: 'include'
 			});
 			const data = await res.json().catch(() => ({}));
 			if (!res.ok) throw new Error(data.message ?? 'Failed');
-			reason = '';
 			await load(true);
 		} catch (e) {
 			err = e instanceof Error ? e.message : 'Failed';
 		}
 	}
-
 </script>
 
 <svelte:head>
@@ -102,7 +100,9 @@
 		<header class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
 			<div>
 				<h1 class="text-2xl font-bold text-slate-900 dark:text-slate-50">Poster moderation</h1>
-				<p class="text-sm text-slate-600 dark:text-slate-400">Approve pending uploads or remove approved posters.</p>
+				<p class="text-sm text-slate-600 dark:text-slate-400">
+					New uploads appear in the gallery immediately. Remove posters here if they violate guidelines.
+				</p>
 			</div>
 			<a class="text-sm font-medium text-emerald-800 underline dark:text-emerald-300" href="/">← Gallery</a>
 		</header>
@@ -133,21 +133,16 @@
 		{:else}
 			<div class="flex flex-wrap items-center gap-3">
 				<label class="text-sm font-medium">
-					Queue
+					Show
 					<select
 						class="ml-2 rounded border border-slate-300 px-2 py-1 dark:border-slate-600 dark:bg-slate-800"
 						bind:value={statusFilter}
 						onchange={() => load(true)}
 					>
-						<option value="pending">Pending</option>
-						<option value="approved">Approved</option>
-						<option value="removed">Removed</option>
-						<option value="all">All</option>
+						<option value="approved">Live in gallery</option>
+						<option value="removed">Previously removed</option>
+						<option value="all">All records</option>
 					</select>
-				</label>
-				<label class="text-sm font-medium">
-					Reason (optional, for approve/remove)
-					<input class="ml-2 rounded border border-slate-300 px-2 py-1 dark:border-slate-600 dark:bg-slate-800" bind:value={reason} />
 				</label>
 				<button type="button" class="ml-auto text-sm text-slate-600 underline dark:text-slate-400" onclick={logout}>Sign out</button>
 			</div>
@@ -166,22 +161,13 @@
 							</p>
 						</div>
 						<div class="flex flex-wrap gap-2">
-							{#if p.status === 'pending'}
-								<button
-									type="button"
-									class="rounded bg-emerald-700 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-800"
-									onclick={() => moderate(p.id, 'approve')}
-								>
-									Approve
-								</button>
-							{/if}
 							{#if p.status === 'approved'}
 								<button
 									type="button"
 									class="rounded bg-red-700 px-3 py-1 text-xs font-semibold text-white hover:bg-red-800"
-									onclick={() => moderate(p.id, 'remove')}
+									onclick={() => deletePoster(p.id, p.title)}
 								>
-									Remove
+									Delete from gallery
 								</button>
 							{/if}
 						</div>

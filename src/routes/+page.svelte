@@ -171,7 +171,7 @@
 	</main>
 
 	<footer class="border-t border-emerald-900/10 py-8 text-center text-xs text-emerald-800/70 dark:border-emerald-100/10 dark:text-emerald-200/70">
-		Built for climate awareness. Images are community-contributed and moderated.
+		Built for climate awareness. Images are community-contributed; moderators can remove inappropriate posts.
 	</footer>
 </div>
 
