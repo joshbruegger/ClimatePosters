@@ -21,7 +21,7 @@
 	<div class="relative aspect-[3/4] w-full overflow-hidden bg-emerald-950/5">
 		<img
 			class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] motion-reduce:transition-none"
-			src={src}
+			{src}
 			{alt}
 			loading="lazy"
 			decoding="async"
@@ -29,7 +29,9 @@
 		/>
 	</div>
 	<div class="flex flex-1 flex-col gap-1 p-3">
-		<h3 class="line-clamp-2 text-sm font-semibold text-emerald-950 dark:text-emerald-50">{poster.title}</h3>
+		<h3 class="line-clamp-2 text-sm font-semibold text-emerald-950 dark:text-emerald-50">
+			{poster.title}
+		</h3>
 		{#if poster.tags?.length}
 			<p class="line-clamp-1 text-xs text-emerald-800/80 dark:text-emerald-200/80">
 				{poster.tags.slice(0, 3).join(' · ')}

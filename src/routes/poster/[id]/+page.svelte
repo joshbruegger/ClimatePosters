@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import PosterModal from '$lib/components/gallery/PosterModal.svelte';
 	import type { PosterListItem } from '$lib/types/poster.js';
@@ -25,7 +26,7 @@
 	function onModalClose() {
 		modalOpen = false;
 		if (history.length > 1) history.back();
-		else goto('/');
+		else goto(resolve('/'));
 	}
 </script>
 
@@ -41,11 +42,19 @@
 	{:else}
 		<div class="mx-auto max-w-3xl space-y-4 text-center">
 			<h1 class="text-2xl font-bold text-emerald-950 dark:text-emerald-50">{poster.title}</h1>
-			<p class="text-sm text-emerald-800/80 dark:text-emerald-200/80">Use the dialog for full details and downloads.</p>
+			<p class="text-sm text-emerald-800/80 dark:text-emerald-200/80">
+				Use the dialog for full details and downloads.
+			</p>
 		</div>
 	{/if}
 </div>
 
 {#if !loadError && poster}
-	<PosterModal bind:open={modalOpen} posterId={id} idList={[id]} initial={poster} onclose={onModalClose} />
+	<PosterModal
+		bind:open={modalOpen}
+		posterId={id}
+		idList={[id]}
+		initial={poster}
+		onclose={onModalClose}
+	/>
 {/if}

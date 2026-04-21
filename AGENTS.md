@@ -1,46 +1,42 @@
-# AGENTS.md
-
 ## Task Completion Requirements
 
-- `bun run typecheck` must pass before considering tasks completed (Svelte + TypeScript via `svelte-check`).
-- `bun run build` must pass for any change that touches application code, routes, server logic, or build config.
-- **Formatting and ESLint are not configured in this repository yet.** Match the style of surrounding files; do not introduce a separate formatter config unless asked.
-- Do not run bare `bun test`. This project has no test runner wired up; if Vitest (or similar) is added later, use `bun run test` only when that script exists.
+- All of `bun fmt`, `bun lint`, `bun run test`, `bun typecheck`, and `bun run build` must pass before considering tasks completed.
+- Use `bun run test` for Vitest (do not invoke the `vitest` binary directly unless debugging).
 
 ## Project Snapshot
 
-**ClimatePosters** is a SvelteKit web app: a public poster gallery with drag-and-drop uploads, search/tags/sort, modal detail views, download tracking, user reporting, and an admin UI to remove posters. Server-side integration uses **PocketBase** (data) and **Vercel Blob** (images). New uploads are **approved by default** and appear in the gallery immediately; moderators **delete** content that should not remain.
+ClimatePosters is a minimal website for finding, downloading, and sharing climate activism posters.
 
-Environment variables are documented in `.env.example`. Collection shapes are referenced under `pb_schema/`.
+This repository is a VERY EARLY WIP. Proposing sweeping changes that improve long-term maintainability is encouraged.
 
 ## Core Priorities
 
-1. **Correctness and safety** — validate uploads and inputs; protect admin routes; never leak secrets client-side.
-2. **Accessibility** — keyboard navigation, focus management, screen-reader-friendly patterns (Bits UI primitives where used).
-3. **Predictable behavior** — clear loading and error states when PocketBase or Blob calls fail.
+1. Correctness and safety (validation, auth, no secret leakage to the client).
+2. Accessibility (keyboard, focus, screen readers).
+3. Clear UX when PocketBase or Blob requests fail.
 
-If a tradeoff is required, prefer robust error handling and clear UX over shortcuts.
+If a tradeoff is required, choose robust error handling over shortcuts.
 
 ## Maintainability
 
-Long-term maintainability matters. Before adding behavior, see whether logic belongs in a **shared server module** under `src/lib/server/` (e.g. PocketBase client, env, auth helpers) or **shared utilities** under `src/lib/utils/`. Avoid duplicating filter/query or validation logic across API routes. Prefer small, focused route handlers that call shared functions.
+Long term maintainability is a core priority. If you add new functionality, first check if there is shared logic that can be extracted to a separate module. Duplicate logic across multiple files is a code smell and should be avoided. Don't be afraid to change existing code. Don't take shortcuts by just adding local logic to solve a problem.
 
 ## Repository Layout
 
-| Area | Role |
-|------|------|
-| `src/routes/` | SvelteKit pages and `+server.ts` API routes (`/api/posters`, `/api/admin/…`, etc.). |
-| `src/lib/components/` | UI: upload zone, gallery grid, modal (`bits-ui`). |
-| `src/lib/server/` | Server-only: PocketBase admin client, Blob upload, admin session/auth helpers. |
-| `src/lib/utils/` | Shared validation and helpers usable from client or server as appropriate. |
-| `pb_schema/` | Reference JSON for PocketBase `posters` collection (create matching collections in your PocketBase instance). |
-| `static/` | Static assets served as-is. |
+| Area                  | Role                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `src/routes/`         | SvelteKit pages and `+server.ts` API routes (`/api/posters`, `/api/admin/…`, etc.).                           |
+| `src/lib/components/` | UI: upload zone, gallery grid, modal (`bits-ui`).                                                             |
+| `src/lib/server/`     | Server-only: PocketBase admin client, Blob upload, admin session/auth helpers.                                |
+| `src/lib/utils/`      | Shared validation and helpers usable from client or server as appropriate.                                    |
+| `pb_schema/`          | Reference JSON for PocketBase `posters` collection (create matching collections in your PocketBase instance). |
+| `static/`             | Static assets served as-is.                                                                                   |
 
-This is a **single app** monolith (no separate frontend package). Keep API contracts stable for any future clients.
+This is a **single app** monolith (no separate frontend package).
 
 ## External Services (Important)
 
-- **PocketBase** — Server uses the admin API (`ensureAdminAuth` in `src/lib/server/pocketbase.ts`) for listing, creating, updating, and deleting records. Public reads in the app go through SvelteKit endpoints, not direct browser access to PocketBase, unless you intentionally change that.
+- **PocketBase** — Server uses the admin API (`ensureAdminAuth` in `src/lib/server/pocketbase.ts`) for listing, creating, updating, and deleting records. Public reads in the app go through SvelteKit endpoints, not direct browser access to PocketBase.
 - **Vercel Blob** — Uploads use `@vercel/blob` with `BLOB_READ_WRITE_TOKEN` on the server only.
 - **Sharp** — Used server-side for image metadata and thumbnails after upload.
 
@@ -48,9 +44,9 @@ When changing data shape, update PocketBase collections and any TypeScript types
 
 ## Reference Documentation
 
-- SvelteKit: https://kit.svelte.dev/docs
-- PocketBase JS SDK: https://pocketbase.io/docs/js-client/
-- Vercel Blob: https://vercel.com/docs/storage/vercel-blob
-- Bits UI: https://bits-ui.com
+- SvelteKit: [https://kit.svelte.dev/docs](https://kit.svelte.dev/docs)
+- PocketBase JS SDK: [https://pocketbase.io/docs/js-client/](https://pocketbase.io/docs/js-client/)
+- Vercel Blob: [https://vercel.com/docs/storage/vercel-blob](https://vercel.com/docs/storage/vercel-blob)
+- Bits UI: [https://bits-ui.com](https://bits-ui.com)
 
 Use these when adjusting routes, auth, or UI primitives.

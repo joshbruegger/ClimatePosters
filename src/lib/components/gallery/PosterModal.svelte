@@ -116,7 +116,9 @@
 			onOpenAutoFocus={(e) => e.preventDefault()}
 			onCloseAutoFocus={() => triggerRef?.focus()}
 		>
-			<div class="flex items-start justify-between gap-3 border-b border-emerald-900/10 px-4 py-3 dark:border-emerald-100/10 sm:px-5">
+			<div
+				class="flex items-start justify-between gap-3 border-b border-emerald-900/10 px-4 py-3 dark:border-emerald-100/10 sm:px-5"
+			>
 				<Dialog.Title class="text-lg font-semibold text-emerald-950 dark:text-emerald-50">
 					{poster?.title ?? 'Poster'}
 				</Dialog.Title>
@@ -127,8 +129,12 @@
 				</Dialog.Close>
 			</div>
 
-			<div class="grid flex-1 gap-4 overflow-y-auto p-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] sm:p-5">
-				<div class="relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-xl bg-emerald-950/5">
+			<div
+				class="grid flex-1 gap-4 overflow-y-auto p-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] sm:p-5"
+			>
+				<div
+					class="relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-xl bg-emerald-950/5"
+				>
 					{#if loading}
 						<p class="text-sm text-emerald-800">Loading…</p>
 					{:else if poster}
@@ -148,7 +154,9 @@
 					{#if poster?.description}
 						<div>
 							<h3 class="font-semibold text-emerald-950 dark:text-emerald-50">About</h3>
-							<p class="mt-1 whitespace-pre-wrap text-emerald-900/90 dark:text-emerald-100/90">{poster.description}</p>
+							<p class="mt-1 whitespace-pre-wrap text-emerald-900/90 dark:text-emerald-100/90">
+								{poster.description}
+							</p>
 						</div>
 					{/if}
 					{#if poster?.author_name}
@@ -168,6 +176,7 @@
 						<a
 							class="inline-flex items-center rounded-lg bg-emerald-700 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
 							href={webDl}
+							rel="external"
 							data-sveltekit-reload
 						>
 							Download (web)
@@ -176,6 +185,7 @@
 							<a
 								class="inline-flex items-center rounded-lg border border-emerald-800/30 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 dark:border-emerald-100/30 dark:text-emerald-50 dark:hover:bg-emerald-900"
 								href={printDl}
+								rel="external"
 								data-sveltekit-reload
 							>
 								Download (print)
@@ -183,7 +193,10 @@
 						{/if}
 					</div>
 
-					<form class="space-y-2 rounded-xl border border-amber-900/15 bg-amber-50/50 p-3 dark:border-amber-100/10 dark:bg-amber-950/30" onsubmit={submitReport}>
+					<form
+						class="space-y-2 rounded-xl border border-amber-900/15 bg-amber-50/50 p-3 dark:border-amber-100/10 dark:bg-amber-950/30"
+						onsubmit={submitReport}
+					>
 						<h3 class="font-semibold text-amber-950 dark:text-amber-100">Report this poster</h3>
 						<label class="block text-xs font-medium">
 							Reason
@@ -218,7 +231,9 @@
 				</div>
 			</div>
 
-			<div class="flex items-center justify-between border-t border-emerald-900/10 px-4 py-3 dark:border-emerald-100/10 sm:px-5">
+			<div
+				class="flex items-center justify-between border-t border-emerald-900/10 px-4 py-3 dark:border-emerald-100/10 sm:px-5"
+			>
 				<button
 					type="button"
 					class="rounded-lg px-3 py-1.5 text-sm font-medium text-emerald-900 hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-40 dark:text-emerald-100 dark:hover:bg-emerald-900"

@@ -109,12 +109,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		error(400, 'Could not process image.');
 	}
 
-	const ext =
-		file.type === 'image/png'
-			? 'png'
-			: file.type === 'image/webp'
-				? 'webp'
-				: 'jpg';
+	const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
 	const idPart = crypto.randomUUID();
 	const mainName = `posters/${idPart}.${ext}`;
 	const thumbName = `posters/${idPart}-thumb.webp`;

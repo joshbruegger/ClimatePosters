@@ -19,7 +19,10 @@ bun run dev
 
 - `bun run dev` — development server
 - `bun run build` — production build (Vercel adapter)
-- `bun run check` — TypeScript and Svelte check
+- `bun fmt` — format with Prettier (`bun run fmt:check` to verify without writing)
+- `bun lint` — ESLint (Svelte + TypeScript)
+- `bun run test` — Vitest unit tests
+- `bun run check` / `bun run typecheck` — TypeScript and Svelte check
 
 ## Admin
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import type { PosterListItem } from '$lib/types/poster.js';
 	import PosterCard from './PosterCard.svelte';
 
@@ -26,7 +27,7 @@
 	let announce = $state('');
 
 	function buildQuery(page: number) {
-		const u = new URLSearchParams();
+		const u = new SvelteURLSearchParams();
 		u.set('page', String(page));
 		u.set('limit', '20');
 		u.set('sort', sort);
@@ -56,9 +57,7 @@
 				nextPage = (reset ? 1 : pageToFetch) + 1;
 			}
 			onids?.(posters.map((x) => x.id));
-			announce = reset
-				? `Loaded ${batch.length} posters.`
-				: `Loaded ${batch.length} more posters.`;
+			announce = reset ? `Loaded ${batch.length} posters.` : `Loaded ${batch.length} more posters.`;
 		} catch (e) {
 			errorMsg = e instanceof Error ? e.message : 'Failed to load';
 			announce = errorMsg;
@@ -110,7 +109,9 @@
 	{/if}
 
 	{#if !loading && posters.length === 0}
-		<p class="text-center text-sm text-emerald-800/80 dark:text-emerald-200/80">No posters match your filters yet.</p>
+		<p class="text-center text-sm text-emerald-800/80 dark:text-emerald-200/80">
+			No posters match your filters yet.
+		</p>
 	{/if}
 
 	<div bind:this={loadMoreEl} class="h-1 w-full" aria-hidden="true"></div>

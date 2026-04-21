@@ -97,7 +97,9 @@
 	}
 </script>
 
-<div class="rounded-2xl border border-emerald-900/20 bg-white/80 shadow-sm backdrop-blur dark:border-emerald-100/10 dark:bg-emerald-950/40">
+<div
+	class="rounded-2xl border border-emerald-900/20 bg-white/80 shadow-sm backdrop-blur dark:border-emerald-100/10 dark:bg-emerald-950/40"
+>
 	<Collapsible.Root bind:open>
 		<div class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
 			<h2 class="text-lg font-semibold tracking-tight text-emerald-950 dark:text-emerald-50">
@@ -111,10 +113,13 @@
 				<span aria-hidden="true" class="text-xs">{open ? '▾' : '▸'}</span>
 			</Collapsible.Trigger>
 		</div>
-		<Collapsible.Content class="overflow-hidden border-t border-emerald-900/10 dark:border-emerald-100/10">
+		<Collapsible.Content
+			class="overflow-hidden border-t border-emerald-900/10 dark:border-emerald-100/10"
+		>
 			<form class="space-y-4 px-4 py-4 sm:px-5" onsubmit={submit}>
 				<p class="text-sm text-emerald-900/80 dark:text-emerald-100/80">
-					PNG, JPG, JPEG, or WebP up to 20MB. Posters go live in the gallery right away; moderators may remove content that violates guidelines.
+					PNG, JPG, JPEG, or WebP up to 20MB. Posters go live in the gallery right away; moderators
+					may remove content that violates guidelines.
 				</p>
 
 				<div
@@ -139,8 +144,12 @@
 					tabindex="0"
 					aria-label="Drop image here or press Enter to choose a file"
 				>
-					<span class="text-sm font-medium text-emerald-900 dark:text-emerald-50">Drop an image here</span>
-					<span class="mt-1 text-xs text-emerald-800/70 dark:text-emerald-100/70">or click to browse</span>
+					<span class="text-sm font-medium text-emerald-900 dark:text-emerald-50"
+						>Drop an image here</span
+					>
+					<span class="mt-1 text-xs text-emerald-800/70 dark:text-emerald-100/70"
+						>or click to browse</span
+					>
 					<input
 						bind:this={fileInput}
 						class="sr-only"

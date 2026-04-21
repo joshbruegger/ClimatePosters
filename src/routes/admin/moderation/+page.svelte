@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
+
 	type PosterRow = {
 		id: string;
 		title: string;
@@ -53,11 +56,11 @@
 		const p = reset ? 1 : pageNum;
 		if (reset) pageNum = 1;
 		try {
-			const u = new URLSearchParams();
+			const u = new SvelteURLSearchParams();
 			u.set('status', statusFilter);
 			u.set('page', String(p));
 			u.set('limit', '20');
-			const res = await fetch(`/api/admin/posters?${u}`, { credentials: 'include' });
+			const res = await fetch(`/api/admin/posters?${u.toString()}`, { credentials: 'include' });
 			const data = await res.json();
 			if (!res.ok) throw new Error(data.message ?? 'Failed to load');
 			const batch = (data.posters ?? []) as PosterRow[];
@@ -76,9 +79,9 @@
 		if (!confirm(`Delete “${title}” from the gallery? This cannot be undone.`)) return;
 		err = null;
 		try {
-			const u = new URLSearchParams();
+			const u = new SvelteURLSearchParams();
 			u.set('id', id);
-			const res = await fetch(`/api/admin/posters?${u}`, {
+			const res = await fetch(`/api/admin/posters?${u.toString()}`, {
 				method: 'DELETE',
 				credentials: 'include'
 			});
@@ -101,14 +104,21 @@
 			<div>
 				<h1 class="text-2xl font-bold text-slate-900 dark:text-slate-50">Poster moderation</h1>
 				<p class="text-sm text-slate-600 dark:text-slate-400">
-					New uploads appear in the gallery immediately. Remove posters here if they violate guidelines.
+					New uploads appear in the gallery immediately. Remove posters here if they violate
+					guidelines.
 				</p>
 			</div>
-			<a class="text-sm font-medium text-emerald-800 underline dark:text-emerald-300" href="/">← Gallery</a>
+			<a
+				class="text-sm font-medium text-emerald-800 underline dark:text-emerald-300"
+				href={resolve('/')}>← Gallery</a
+			>
 		</header>
 
 		{#if !loggedIn}
-			<form class="max-w-md space-y-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900" onsubmit={login}>
+			<form
+				class="max-w-md space-y-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+				onsubmit={login}
+			>
 				<label class="block text-sm font-medium">
 					Admin password
 					<input
@@ -144,14 +154,20 @@
 						<option value="all">All records</option>
 					</select>
 				</label>
-				<button type="button" class="ml-auto text-sm text-slate-600 underline dark:text-slate-400" onclick={logout}>Sign out</button>
+				<button
+					type="button"
+					class="ml-auto text-sm text-slate-600 underline dark:text-slate-400"
+					onclick={logout}>Sign out</button
+				>
 			</div>
 
 			{#if err}
 				<p class="text-sm text-red-600" role="alert">{err}</p>
 			{/if}
 
-			<ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-900">
+			<ul
+				class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-900"
+			>
 				{#each posters as p (p.id)}
 					<li class="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
 						<div>

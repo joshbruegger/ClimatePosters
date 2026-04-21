@@ -12,7 +12,10 @@ export const GET: RequestHandler = async ({ request, url }) => {
 
 	const status = url.searchParams.get('status') ?? 'approved';
 	const page = Math.max(1, Number(url.searchParams.get('page') ?? '1') || 1);
-	const limit = Math.min(Math.max(1, Number(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)) || DEFAULT_LIMIT), 50);
+	const limit = Math.min(
+		Math.max(1, Number(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)) || DEFAULT_LIMIT),
+		50
+	);
 
 	let filter: string;
 	if (status === 'all') {

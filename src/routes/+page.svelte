@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import PosterGrid from '$lib/components/gallery/PosterGrid.svelte';
 	import PosterModal from '$lib/components/gallery/PosterModal.svelte';
@@ -43,6 +44,8 @@
 	});
 
 	function pushUrl(next: URL) {
+		// Dynamic pathname + search is not a typed route literal for `resolve()`
+		// eslint-disable-next-line svelte/no-navigation-without-resolve -- same-origin URL from URL API
 		goto(`${next.pathname}${next.search}`, {
 			replaceState: true,
 			noScroll: true,
@@ -96,18 +99,27 @@
 	/>
 </svelte:head>
 
-<div class="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-slate-50 text-emerald-950 dark:from-emerald-950 dark:via-emerald-950 dark:to-slate-950 dark:text-emerald-50">
-	<header class="border-b border-emerald-900/10 bg-white/70 backdrop-blur dark:border-emerald-100/10 dark:bg-emerald-950/70">
+<div
+	class="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-slate-50 text-emerald-950 dark:from-emerald-950 dark:via-emerald-950 dark:to-slate-950 dark:text-emerald-50"
+>
+	<header
+		class="border-b border-emerald-900/10 bg-white/70 backdrop-blur dark:border-emerald-100/10 dark:bg-emerald-950/70"
+	>
 		<div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 sm:px-6">
-			<p class="text-xs font-semibold uppercase tracking-widest text-emerald-700 dark:text-emerald-300">Climate crisis · Visual activism</p>
+			<p
+				class="text-xs font-semibold uppercase tracking-widest text-emerald-700 dark:text-emerald-300"
+			>
+				Climate crisis · Visual activism
+			</p>
 			<h1 class="text-3xl font-bold tracking-tight sm:text-4xl">ClimatePosters</h1>
 			<p class="max-w-2xl text-base text-emerald-900/85 dark:text-emerald-100/85">
-				A living gallery of posters for climate justice and awareness. Uploads are reviewed before they appear publicly.
+				A living gallery of posters for climate justice and awareness. Uploads are reviewed before
+				they appear publicly.
 			</p>
 			<nav class="pt-2" aria-label="Site">
 				<a
 					class="text-sm font-medium text-emerald-800 underline-offset-4 hover:underline dark:text-emerald-200"
-					href="/admin/moderation"
+					href={resolve('/admin/moderation')}
 				>
 					Moderation (admin)
 				</a>
@@ -123,7 +135,9 @@
 				<h2 id="discover-heading" class="text-xl font-semibold">Discover</h2>
 			</div>
 
-			<div class="grid gap-3 rounded-2xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm dark:border-emerald-100/10 dark:bg-emerald-950/40 sm:grid-cols-2 lg:grid-cols-4">
+			<div
+				class="grid gap-3 rounded-2xl border border-emerald-900/10 bg-white/80 p-4 shadow-sm dark:border-emerald-100/10 dark:bg-emerald-950/40 sm:grid-cols-2 lg:grid-cols-4"
+			>
 				<label class="block text-sm font-medium lg:col-span-2">
 					Search title & description
 					<input
@@ -170,8 +184,11 @@
 		</section>
 	</main>
 
-	<footer class="border-t border-emerald-900/10 py-8 text-center text-xs text-emerald-800/70 dark:border-emerald-100/10 dark:text-emerald-200/70">
-		Built for climate awareness. Images are community-contributed; moderators can remove inappropriate posts.
+	<footer
+		class="border-t border-emerald-900/10 py-8 text-center text-xs text-emerald-800/70 dark:border-emerald-100/10 dark:text-emerald-200/70"
+	>
+		Built for climate awareness. Images are community-contributed; moderators can remove
+		inappropriate posts.
 	</footer>
 </div>
 
