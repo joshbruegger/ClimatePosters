@@ -8,18 +8,18 @@ SvelteKit gallery for climate awareness posters: public uploads (pending review)
 
 2. In PocketBase, create collections `posters` and `poster_reports` to match the fields in `pb_schema/posters.collection.json` (see the spec in your project plan for full field list). Set API rules so only the server (admin token) can read/write as needed for your deployment.
 
-3. Install and run:
+3. Install [Bun](https://bun.sh), then install and run:
 
 ```sh
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 ## Scripts
 
-- `npm run dev` — development server
-- `npm run build` — production build (Vercel adapter)
-- `npm run check` — TypeScript and Svelte check
+- `bun run dev` — development server
+- `bun run build` — production build (Vercel adapter)
+- `bun run check` — TypeScript and Svelte check
 
 ## Admin
 
