@@ -1,0 +1,32 @@
+{
+	"name": "posters",
+	"type": "base",
+	"schema": [
+		{ "name": "title", "type": "text", "required": true, "max": 255, "options": {} },
+		{ "name": "description", "type": "editor", "required": false, "options": {} },
+		{ "name": "author_name", "type": "text", "required": false, "max": 100, "options": {} },
+		{ "name": "tags", "type": "json", "required": false, "options": {} },
+		{ "name": "blob_url", "type": "url", "required": true, "options": {} },
+		{ "name": "blob_url_print", "type": "url", "required": false, "options": {} },
+		{ "name": "thumbnail_url", "type": "url", "required": false, "options": {} },
+		{ "name": "width", "type": "number", "required": false, "options": {} },
+		{ "name": "height", "type": "number", "required": false, "options": {} },
+		{ "name": "file_size", "type": "number", "required": false, "options": {} },
+		{ "name": "download_count", "type": "number", "required": false, "options": { "min": 0 } },
+		{
+			"name": "status",
+			"type": "select",
+			"required": true,
+			"options": { "values": ["pending", "approved", "removed"], "maxSelect": 1 }
+		},
+		{ "name": "moderated_by", "type": "text", "required": false, "options": {} },
+		{ "name": "moderated_at", "type": "date", "required": false, "options": {} },
+		{ "name": "moderation_reason", "type": "text", "required": false, "options": {} }
+	],
+	"indexes": [],
+	"listRule": "",
+	"viewRule": "",
+	"createRule": null,
+	"updateRule": null,
+	"deleteRule": null
+}
