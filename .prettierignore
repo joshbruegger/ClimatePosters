@@ -2,8 +2,6 @@
 build
 .vercel
 .output
-.agents
 node_modules
 coverage
 bun.lock
-skills-lock.json
